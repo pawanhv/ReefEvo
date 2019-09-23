@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ReefEv</string>
+    <string name="empty">No photos found</string>
+    <string name="folderName">Folder Name</string>
+</resources>

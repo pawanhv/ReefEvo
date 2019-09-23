@@ -16,14 +16,14 @@ public class MainActivity extends AppCompatActivity {
 
     /** Called when the user clicks the Send button */
     public void gallery_view_click(View view) {
-        Intent intent = new Intent(this, GalleryActivity.class);
+        Intent intent = new Intent(this, CameraActivity.class);
         startActivity(intent);
     }
-
+/*
     public void new_collection_click(View view) {
         Intent intent = new Intent(this, NewCollectionActivity.class);
         startActivity(intent);
     }
-
+*/
 
 }

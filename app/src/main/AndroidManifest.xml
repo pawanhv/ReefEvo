@@ -9,21 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".VideoPlayerActivity"
-            android:hardwareAccelerated="false"></activity>
+        <activity android:name=".CameraActivity"></activity>
+        <activity
+            android:name=".VideoPlayerActivity"
+            android:hardwareAccelerated="false" />
         <activity
             android:name=".ImageDisplay"
             android:parentActivityName=".GalleryActivity" />
-        <activity
-            android:name=".NewCollectionActivity"
-            android:parentActivityName=".MainActivity">
-
-            <!-- The meta-data tag is required if you support API level 15 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
         <activity
             android:name=".GalleryActivity"
             android:parentActivityName=".MainActivity">
@@ -42,6 +34,7 @@
         </activity>
     </application>
 
+    <uses-feature android:name="android.hardware.camera2.full" />
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
@@ -51,5 +44,6 @@
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:required="true" />
 
+    <uses-permission android:name="android.permission.CAMERA" />
 
 </manifest>

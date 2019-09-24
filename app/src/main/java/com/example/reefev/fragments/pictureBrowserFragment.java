@@ -66,6 +66,7 @@ public class pictureBrowserFragment extends Fragment implements imageIndicatorLi
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         return inflater.inflate(R.layout.picture_browser, container, false);
 
     }

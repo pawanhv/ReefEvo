@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.Point;
@@ -37,6 +39,8 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.example.reefev.R;
@@ -79,6 +83,9 @@ public class Camera2BasicFragment extends Fragment
         ORIENTATIONS.append(Surface.ROTATION_270, 180);
     }
 
+    SeekBar TransSeekBar;
+    int progressChangedValue = 0;
+    ImageView myImage;
     /**
      * Tag for the {@link Log}.
      */
@@ -104,22 +111,22 @@ public class Camera2BasicFragment extends Fragment
      */
     private static final int STATE_WAITING_NON_PRECAPTURE = 3;
 
-    /**
+    /*
      * Camera state: Picture was taken.
      */
     private static final int STATE_PICTURE_TAKEN = 4;
 
-    /**
+    /*
      * Max preview width that is guaranteed by Camera2 API
      */
     private static final int MAX_PREVIEW_WIDTH = 1920;
 
-    /**
+    /*
      * Max preview height that is guaranteed by Camera2 API
      */
     private static final int MAX_PREVIEW_HEIGHT = 1080;
 
-    /**
+    /*
      * {@link TextureView.SurfaceTextureListener} handles several lifecycle events on a
      * {@link TextureView}.
      */
@@ -418,8 +425,34 @@ public class Camera2BasicFragment extends Fragment
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         view.findViewById(R.id.picture).setOnClickListener(this);
-        view.findViewById(R.id.info).setOnClickListener(this);
         mTextureView = (AutoFitTextureView) view.findViewById(R.id.texture);
+
+        File imgFile = new  File(getActivity().getExternalFilesDir(null), "pic.jpg");
+        myImage = view.findViewById(R.id.overlayimg);
+        TransSeekBar =view.findViewById(R.id.seekBar);
+
+        if(imgFile.exists()){
+            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            myImage.setImageBitmap(myBitmap);
+            myImage.setAlpha(0.5f); //value: [0.0-1.0]. Where 0 is fully transparent and 1.0 is fully opaque.
+        }
+
+
+        // perform seek bar change listener event used for getting the progress value
+        TransSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progressChangedValue = progress;
+            }
+
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                myImage.setAlpha(progressChangedValue/200.0f);
+            }
+        });
+
     }
 
     @Override
@@ -886,16 +919,7 @@ public class Camera2BasicFragment extends Fragment
                 takePicture();
                 break;
             }
-            case R.id.info: {
-                Activity activity = getActivity();
-                if (null != activity) {
-                    new AlertDialog.Builder(activity)
-                            .setMessage(R.string.intro_message)
-                            .setPositiveButton(android.R.string.ok, null)
-                            .show();
-                }
-                break;
-            }
+
         }
     }
 

@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CameraActivity"></activity>
+        <activity android:name=".AddCollection"></activity>
+        <activity android:name=".CameraActivity" />
         <activity
             android:name=".VideoPlayerActivity"
             android:hardwareAccelerated="false" />
@@ -33,17 +34,16 @@
             </intent-filter>
         </activity>
     </application>
-
-    <uses-feature android:name="android.hardware.camera2.full" />
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <uses-feature android:name="android.hardware.camera2.full" />
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:required="true" />
-
     <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>

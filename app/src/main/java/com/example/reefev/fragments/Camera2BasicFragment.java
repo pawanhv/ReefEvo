@@ -154,32 +154,32 @@ public class Camera2BasicFragment extends Fragment
 
     };
 
-    /**
+    /*
      * ID of the current {@link CameraDevice}.
      */
     private String mCameraId;
 
-    /**
+    /*
      * An {@link AutoFitTextureView} for camera preview.
      */
     private AutoFitTextureView mTextureView;
 
-    /**
+    /*
      * A {@link CameraCaptureSession } for camera preview.
      */
     private CameraCaptureSession mCaptureSession;
 
-    /**
+    /*
      * A reference to the opened {@link CameraDevice}.
      */
     private CameraDevice mCameraDevice;
 
-    /**
+    /*
      * The {@link android.util.Size} of camera preview.
      */
     private Size mPreviewSize;
 
-    /**
+    /*
      * {@link CameraDevice.StateCallback} is called when {@link CameraDevice} changes its state.
      */
     private final CameraDevice.StateCallback mStateCallback = new CameraDevice.StateCallback() {
@@ -212,27 +212,27 @@ public class Camera2BasicFragment extends Fragment
 
     };
 
-    /**
+    /*
      * An additional thread for running tasks that shouldn't block the UI.
      */
     private HandlerThread mBackgroundThread;
 
-    /**
+    /*
      * A {@link Handler} for running tasks in the background.
      */
     private Handler mBackgroundHandler;
 
-    /**
+    /*
      * An {@link ImageReader} that handles still image capture.
      */
     private ImageReader mImageReader;
 
-    /**
+    /*
      * This is the output file for our picture.
      */
     private File mFile;
 
-    /**
+    /*
      * This a callback object for the {@link ImageReader}. "onImageAvailable" will be called when a
      * still image is ready to be saved.
      */
@@ -246,7 +246,7 @@ public class Camera2BasicFragment extends Fragment
 
     };
 
-    /**
+    /*
      * {@link CaptureRequest.Builder} for the camera preview
      */
     private CaptureRequest.Builder mPreviewRequestBuilder;
@@ -436,7 +436,6 @@ public class Camera2BasicFragment extends Fragment
             myImage.setImageBitmap(myBitmap);
             myImage.setAlpha(0.5f); //value: [0.0-1.0]. Where 0 is fully transparent and 1.0 is fully opaque.
         }
-
 
         // perform seek bar change listener event used for getting the progress value
         TransSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {

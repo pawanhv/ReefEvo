@@ -120,13 +120,9 @@ public class ImageDisplay extends AppCompatActivity implements itemClickListener
             cursor.moveToFirst();
             do{
                 pictureFacer pic = new pictureFacer();
-
                 pic.setPicturName(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME)));
-
                 pic.setPicturePath(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)));
-
                 pic.setPictureSize(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE)));
-
                 images.add(pic);
             }while(cursor.moveToNext());
             cursor.close();

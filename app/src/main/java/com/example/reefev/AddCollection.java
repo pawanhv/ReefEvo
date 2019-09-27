@@ -5,6 +5,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
@@ -43,13 +44,19 @@ public class AddCollection extends AppCompatActivity {
 
 
                 } else {
-
-
                     File folder = new File(Environment.getExternalStorageDirectory() ,"ReefEVO"+ File.separator +inpTextName.getText());
                     boolean success = true;
                     if (!folder.exists()) {
                         success = folder.mkdirs();
+
+                        Intent intent = new Intent(AddCollection.this, CameraActivity.class);
+
+                        intent.putExtra("Collectionname",inpTextName.getText());
+                        intent.putExtra("Collectiontype","New");
+
+                        startActivity(intent);
                     }
+
 
                 }
             }

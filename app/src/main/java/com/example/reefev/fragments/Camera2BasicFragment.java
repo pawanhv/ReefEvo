@@ -28,6 +28,7 @@ import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 
@@ -51,8 +52,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -86,6 +89,7 @@ public class Camera2BasicFragment extends Fragment
     SeekBar TransSeekBar;
     int progressChangedValue = 0;
     ImageView myImage;
+    String value1,value2;
     /**
      * Tag for the {@link Log}.
      */
@@ -424,17 +428,37 @@ public class Camera2BasicFragment extends Fragment
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            value1 = bundle.getString("VALUE1", "");
+            value2 = bundle.getString("VALUE2", "");
+            showToast(value1);
+        }
+
+
+
         view.findViewById(R.id.picture).setOnClickListener(this);
         mTextureView = (AutoFitTextureView) view.findViewById(R.id.texture);
 
-        File imgFile = new  File(getActivity().getExternalFilesDir(null), "pic.jpg");
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmssZ");
+        String dateStr = dateFormat.format(cal.getTime());
+
+
         myImage = view.findViewById(R.id.overlayimg);
         TransSeekBar =view.findViewById(R.id.seekBar);
 
-        if(imgFile.exists()){
-            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-            myImage.setImageBitmap(myBitmap);
-            myImage.setAlpha(0.5f); //value: [0.0-1.0]. Where 0 is fully transparent and 1.0 is fully opaque.
+        if (value2=="New"){
+            TransSeekBar.setVisibility(View.GONE);
+        }
+        else{
+            File imgFile = new  File(getActivity().getExternalFilesDir(null), "pic.jpg");
+            if(imgFile.exists()){
+                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                myImage.setImageBitmap(myBitmap);
+                myImage.setAlpha(0.5f); //value: [0.0-1.0]. Where 0 is fully transparent and 1.0 is fully opaque.
+            }
+
         }
 
         // perform seek bar change listener event used for getting the progress value
@@ -457,7 +481,15 @@ public class Camera2BasicFragment extends Fragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mFile = new File(getActivity().getExternalFilesDir(null), "pic.jpg");
+
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmssZ");
+        String dateStr = dateFormat.format(cal.getTime());
+
+
+        mFile = new File(Environment.getExternalStorageDirectory() ,"ReefEVO"+ File.separator + value1+ File.separator +dateStr+".jpg");
+
+
     }
 
     @Override

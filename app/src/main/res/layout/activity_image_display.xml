@@ -30,6 +30,18 @@
                 android:layout_marginStart="10dp" />
 
             <ImageButton
+                android:id="@+id/add_coll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:layout_marginEnd="50dp"
+                android:layout_marginRight="10dp"
+                android:background="@android:color/transparent"
+                android:src="@android:drawable/ic_input_add"
+                android:tint="@color/SecondaryVariant"
+                android:onClick="onClick_add_coll" />
+
+            <ImageButton
                 android:id="@+id/play_morph"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -37,9 +49,10 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:background="@android:color/transparent"
+                android:onClick="onClick_Play_morph"
                 android:src="@android:drawable/ic_media_play"
-                android:tint="@color/SecondaryVariant"
-                android:onClick="onClick_Play_morph" />
+                android:tint="@color/SecondaryVariant" />
+
 
         </androidx.cardview.widget.CardView>
 

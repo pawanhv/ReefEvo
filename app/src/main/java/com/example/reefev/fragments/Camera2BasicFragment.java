@@ -452,7 +452,19 @@ public class Camera2BasicFragment extends Fragment
             TransSeekBar.setVisibility(View.GONE);
         }
         else{
-            File imgFile = new  File(getActivity().getExternalFilesDir(null), "pic.jpg");
+
+            List<Integer> results = new ArrayList<Integer>();
+            File[] files = new File(Environment.getExternalStorageDirectory() ,"ReefEVO"+ File.separator + value1).listFiles();
+            String Splittxt;
+            for (File file : files) {
+                if (file.isFile()) {
+                    Splittxt = file.getName();
+                    results.add(Integer.parseInt(Splittxt.split(".",2)[0]));
+                }
+            }
+
+            String filnae = Collections.max(results).toString()+".jpg";
+            File imgFile = new  File(getActivity().getExternalFilesDir(null), filnae);
             if(imgFile.exists()){
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                 myImage.setImageBitmap(myBitmap);
@@ -486,8 +498,8 @@ public class Camera2BasicFragment extends Fragment
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmssZ");
         String dateStr = dateFormat.format(cal.getTime());
 
-
-        mFile = new File(Environment.getExternalStorageDirectory() ,"ReefEVO"+ File.separator + value1+ File.separator +dateStr+".jpg");
+        dateStr = dateStr.split("-",2)[0];
+        mFile = new File(Environment.getExternalStorageDirectory() ,"ReefEVO"+ File.separator + value1 + File.separator +dateStr+".jpg");
 
 
     }

@@ -145,4 +145,12 @@ public class ImageDisplay extends AppCompatActivity implements itemClickListener
         startActivity(intent);
     }
 
+    public void onClick_add_coll(View v)
+    {
+        Intent intent = new Intent(this, CameraActivity.class);
+        intent.putExtra("Collectionname",filename1);
+        intent.putExtra("Collectiontype","Old");
+        startActivity(intent);
+    }
+
 }

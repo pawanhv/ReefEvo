@@ -42,7 +42,6 @@ public class AddCollection extends AppCompatActivity {
             public void onClick(View view) {
                 if (TextUtils.isEmpty(inpTextName.getText())) {
 
-
                 } else {
                     File folder = new File(Environment.getExternalStorageDirectory() ,"ReefEVO"+ File.separator +inpTextName.getText());
                     boolean success = true;

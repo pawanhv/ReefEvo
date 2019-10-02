@@ -29,8 +29,8 @@ public class CameraActivity extends AppCompatActivity {
         if (null == savedInstanceState) {
             FragmentManager fm = getSupportFragmentManager();
             Bundle arguments = new Bundle();
-            arguments.putString("VALUE1", "Hi");
-            arguments.putString("VALUE2", "Hello");
+            arguments.putString("VALUE1", folderName);
+            arguments.putString("VALUE2", "New");
 
             Camera2BasicFragment myFragment = Camera2BasicFragment.newInstance();
             myFragment.setArguments(arguments);

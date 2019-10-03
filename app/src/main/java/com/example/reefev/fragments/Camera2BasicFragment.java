@@ -446,32 +446,34 @@ public class Camera2BasicFragment extends Fragment
         myImage = view.findViewById(R.id.overlayimg);
         TransSeekBar =view.findViewById(R.id.seekBar);
 
-        if (value2=="New"){
+        if (value2.contains("New")){
             TransSeekBar.setVisibility(View.GONE);
         }
-        /*
-        else{
 
-            List<Integer> results = new ArrayList<Integer>();
+        else{
+            List<Long> results = new ArrayList<Long>();
             File[] files = new File(Environment.getExternalStorageDirectory() ,"ReefEVO"+ File.separator + value1).listFiles();
             String Splittxt;
-            for (File file : files) {
-                if (file.isFile()) {
-                    Splittxt = file.getName();
-                    results.add(Integer.parseInt(Splittxt.split(".",2)[0]));
+
+            if (files.length>0){
+                for (File file : files) {
+                    if (file.isFile()) {
+                        Splittxt = file.getName();
+                        results.add(Long.parseLong(Splittxt.substring(0, Splittxt.length() - 4)));
+                    }
                 }
+                String filnae = Collections.max(results).toString()+".jpg";
+                showToast(filnae);
+                File imgFile = new  File(Environment.getExternalStorageDirectory() ,"ReefEVO"+ File.separator + value1 + File.separator + filnae);
+                if(imgFile.exists()){
+                    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                    myImage.setImageBitmap(myBitmap);
+                    myImage.setAlpha(0.5f); //value: [0.0-1.0]. Where 0 is fully transparent and 1.0 is fully opaque.
+                }
+
+
             }
-
-            String filnae = Collections.max(results).toString()+".jpg";
-
-            File imgFile = new  File(getActivity().getExternalFilesDir(null), filnae);
-            if(imgFile.exists()){
-                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                myImage.setImageBitmap(myBitmap);
-                myImage.setAlpha(0.5f); //value: [0.0-1.0]. Where 0 is fully transparent and 1.0 is fully opaque.
-            }
-
-        }*/
+        }
 
         // perform seek bar change listener event used for getting the progress value
         TransSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {

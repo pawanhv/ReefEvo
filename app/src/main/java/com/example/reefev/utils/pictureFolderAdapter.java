@@ -15,7 +15,6 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.ArrayList;
 
 /**
- * Author CodeBoy722
  *
  * An adapter for populating RecyclerView with items representing folders that contain images
  */
@@ -25,7 +24,7 @@ public class pictureFolderAdapter extends RecyclerView.Adapter<pictureFolderAdap
     private Context folderContx;
     private itemClickListener listenToClick;
 
-    /**
+    /*
      *
      * @param folders An ArrayList of String that represents paths to folders on the external storage that contain pictures
      * @param folderContx The Activity or fragment Context
@@ -43,7 +42,6 @@ public class pictureFolderAdapter extends RecyclerView.Adapter<pictureFolderAdap
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View cell = inflater.inflate(R.layout.picture_folder_item, parent, false);
         return new FolderHolder(cell);
-
     }
 
     @Override

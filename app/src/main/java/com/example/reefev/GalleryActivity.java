@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +24,8 @@ import com.example.reefev.utils.itemClickListener;
 import com.example.reefev.utils.pictureFacer;
 import com.example.reefev.utils.pictureFolderAdapter;
 
+import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 
 public class GalleryActivity extends AppCompatActivity implements itemClickListener {
@@ -63,6 +66,35 @@ public class GalleryActivity extends AppCompatActivity implements itemClickListe
     private ArrayList<imageFolder> getPicturePaths(){
         ArrayList<imageFolder> picFolders = new ArrayList<>();
         ArrayList<String> picPaths = new ArrayList<>();
+
+        File path = new File(Environment.getExternalStorageDirectory() ,"ReefEVO");
+        if (! path.exists()){
+            path.mkdir();
+        }
+
+        File [] directories = path.listFiles();
+        if (directories.length == 0) {
+            // array empty or does not exist
+        }
+        else
+        {
+            for (int i = 0; i< directories.length; i++) {
+                if (directories[i].isDirectory()){ //this line weeds out other directories/folders
+                    imageFolder folds = new imageFolder();
+                    folds.setPath(directories[i].getAbsolutePath());
+                    folds.setFolderName(directories[i].getName());
+                    //folds.setFirstPic();//if the folder has only one picture this line helps to set it as first so as to avoid blank image in itemview
+                    folds.addpics();
+                    picFolders.add(folds);
+                }
+
+            }
+
+        }
+
+
+
+
         Uri allImagesuri = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         String[] projection = { MediaStore.Images.ImageColumns.DATA ,MediaStore.Images.Media.DISPLAY_NAME,
                 MediaStore.Images.Media.BUCKET_DISPLAY_NAME,MediaStore.Images.Media.BUCKET_ID};

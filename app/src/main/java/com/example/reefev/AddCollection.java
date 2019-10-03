@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.io.File;
 
@@ -42,7 +43,8 @@ public class AddCollection extends AppCompatActivity {
             public void onClick(View view) {
                 if (TextUtils.isEmpty(inpTextName.getText())) {
 
-                } else {
+                }
+                else {
                     File folder = new File(Environment.getExternalStorageDirectory() ,"ReefEVO"+ File.separator +inpTextName.getText());
                     boolean success = true;
                     if (!folder.exists()) {
@@ -50,7 +52,7 @@ public class AddCollection extends AppCompatActivity {
 
                         Intent intent = new Intent(AddCollection.this, CameraActivity.class);
 
-                        intent.putExtra("Collectionname",inpTextName.getText());
+                        intent.putExtra("Collectionname",inpTextName.getText().toString());
                         intent.putExtra("Collectiontype","New");
 
                         startActivity(intent);

@@ -90,6 +90,7 @@ public class Camera2BasicFragment extends Fragment
     int progressChangedValue = 0;
     ImageView myImage;
     String value1,value2;
+
     /**
      * Tag for the {@link Log}.
      */
@@ -430,9 +431,11 @@ public class Camera2BasicFragment extends Fragment
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
+
             value1 = bundle.getString("VALUE1", "");
             value2 = bundle.getString("VALUE2", "");
-            showToast(value1);
+            showToast(value1+"    "+value2);
+
         }
 
 
@@ -440,17 +443,13 @@ public class Camera2BasicFragment extends Fragment
         view.findViewById(R.id.picture).setOnClickListener(this);
         mTextureView = (AutoFitTextureView) view.findViewById(R.id.texture);
 
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmssZ");
-        String dateStr = dateFormat.format(cal.getTime());
-
-
         myImage = view.findViewById(R.id.overlayimg);
         TransSeekBar =view.findViewById(R.id.seekBar);
 
         if (value2=="New"){
             TransSeekBar.setVisibility(View.GONE);
         }
+        /*
         else{
 
             List<Integer> results = new ArrayList<Integer>();
@@ -464,6 +463,7 @@ public class Camera2BasicFragment extends Fragment
             }
 
             String filnae = Collections.max(results).toString()+".jpg";
+
             File imgFile = new  File(getActivity().getExternalFilesDir(null), filnae);
             if(imgFile.exists()){
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
@@ -471,7 +471,7 @@ public class Camera2BasicFragment extends Fragment
                 myImage.setAlpha(0.5f); //value: [0.0-1.0]. Where 0 is fully transparent and 1.0 is fully opaque.
             }
 
-        }
+        }*/
 
         // perform seek bar change listener event used for getting the progress value
         TransSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -494,12 +494,6 @@ public class Camera2BasicFragment extends Fragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmssZ");
-        String dateStr = dateFormat.format(cal.getTime());
-
-        dateStr = dateStr.split("-",2)[0];
-        mFile = new File(Environment.getExternalStorageDirectory() ,"ReefEVO"+ File.separator + value1 + File.separator +dateStr+".jpg");
 
 
     }
@@ -881,40 +875,46 @@ public class Camera2BasicFragment extends Fragment
      */
     private void captureStillPicture() {
         try {
-            final Activity activity = getActivity();
-            if (null == activity || null == mCameraDevice) {
-                return;
-            }
-            // This is the CaptureRequest.Builder that we use to take a picture.
-            final CaptureRequest.Builder captureBuilder =
-                    mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
-            captureBuilder.addTarget(mImageReader.getSurface());
+                Calendar cal = Calendar.getInstance();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmss");
+                String dateStr = dateFormat.format(cal.getTime());
+                String hh = "ReefEVO" + File.separator + value1 + File.separator  + dateStr +".jpg";
+                mFile = new File(Environment.getExternalStorageDirectory() ,hh );
 
-            // Use the same AE and AF modes as the preview.
-            captureBuilder.set(CaptureRequest.CONTROL_AF_MODE,
-                    CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
-            setAutoFlash(captureBuilder);
-
-            // Orientation
-            int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
-            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, getOrientation(rotation));
-
-            CameraCaptureSession.CaptureCallback CaptureCallback
-                    = new CameraCaptureSession.CaptureCallback() {
-
-                @Override
-                public void onCaptureCompleted(@NonNull CameraCaptureSession session,
-                                               @NonNull CaptureRequest request,
-                                               @NonNull TotalCaptureResult result) {
-                    showToast("Saved: " + mFile);
-                    Log.d(TAG, mFile.toString());
-                    unlockFocus();
+                final Activity activity = getActivity();
+                if (null == activity || null == mCameraDevice) {
+                    return;
                 }
-            };
+                // This is the CaptureRequest.Builder that we use to take a picture.
+                final CaptureRequest.Builder captureBuilder =
+                        mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
+                captureBuilder.addTarget(mImageReader.getSurface());
 
-            mCaptureSession.stopRepeating();
-            mCaptureSession.abortCaptures();
-            mCaptureSession.capture(captureBuilder.build(), CaptureCallback, null);
+                // Use the same AE and AF modes as the preview.
+                captureBuilder.set(CaptureRequest.CONTROL_AF_MODE,
+                        CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
+                setAutoFlash(captureBuilder);
+
+                // Orientation
+                int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
+                captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, getOrientation(rotation));
+
+                CameraCaptureSession.CaptureCallback CaptureCallback
+                        = new CameraCaptureSession.CaptureCallback() {
+
+                    @Override
+                    public void onCaptureCompleted(@NonNull CameraCaptureSession session,
+                                                   @NonNull CaptureRequest request,
+                                                   @NonNull TotalCaptureResult result) {
+                        showToast("Saved: " + mFile);
+                        Log.d(TAG, value1);
+                        unlockFocus();
+                    }
+                };
+
+                mCaptureSession.stopRepeating();
+                mCaptureSession.abortCaptures();
+                mCaptureSession.capture(captureBuilder.build(), CaptureCallback, null);
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }

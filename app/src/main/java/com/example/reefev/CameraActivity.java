@@ -21,20 +21,19 @@ public class CameraActivity extends AppCompatActivity {
         folderName = getIntent().getStringExtra("Collectionname");
         folderType = getIntent().getStringExtra("Collectiontype");
 
-        if (folderType=="New"){
-            Toast.makeText(this, "New Collection Created", Toast.LENGTH_SHORT).show();
 
-        }
+
+        String ff = folderType;
+
+
 
         if (null == savedInstanceState) {
             FragmentManager fm = getSupportFragmentManager();
             Bundle arguments = new Bundle();
             arguments.putString("VALUE1", folderName);
-            arguments.putString("VALUE2", "New");
-
+            arguments.putString("VALUE2", ff);
             Camera2BasicFragment myFragment = Camera2BasicFragment.newInstance();
             myFragment.setArguments(arguments);
-
             fm.beginTransaction().replace(R.id.container, myFragment).commit();
         }
     }

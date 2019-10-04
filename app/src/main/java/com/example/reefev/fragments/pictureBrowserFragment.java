@@ -165,7 +165,7 @@ public class pictureBrowserFragment extends Fragment implements imageIndicatorLi
 
 
     /**
-     * this method of the imageIndicatorListerner interface helps in communication between the fragment and the recyclerView Adapter
+     * this method of the imageIndicator Listener interface helps in communication between the fragment and the recyclerView Adapter
      * each time an iten in the adapter is clicked the position of that item is communicated in the fragment and the position of the
      * viewPager is adjusted as follows
      * @param ImagePosition The position of an image item in the RecyclerView Adapter

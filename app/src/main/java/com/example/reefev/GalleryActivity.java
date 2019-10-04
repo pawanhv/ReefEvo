@@ -16,6 +16,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.reefev.utils.MarginDecoration;
 import com.example.reefev.utils.PicHolder;
@@ -81,9 +82,20 @@ public class GalleryActivity extends AppCompatActivity implements itemClickListe
             for (int i = 0; i< directories.length; i++) {
                 if (directories[i].isDirectory()){ //this line weeds out other directories/folders
                     imageFolder folds = new imageFolder();
+
                     folds.setPath(directories[i].getAbsolutePath());
                     folds.setFolderName(directories[i].getName());
-                    //folds.setFirstPic();//if the folder has only one picture this line helps to set it as first so as to avoid blank image in itemview
+                    String datapath="";
+                    File[] files = new File(Environment.getExternalStorageDirectory() ,"ReefEVO"+ File.separator + directories[i].getName()).listFiles();
+                    if (files.length>0) {
+                        for (File file : files) {
+                            if (file.isFile()) {
+                                datapath= file.getAbsolutePath()+File.separator+file.getName();
+                                break;
+                            }
+                        }
+                        folds.setFirstPic(datapath);//if the folder has only one picture this line helps to set it as first so as to avoid blank image in itemview
+                    }
                     folds.addpics();
                     picFolders.add(folds);
                 }
@@ -94,7 +106,7 @@ public class GalleryActivity extends AppCompatActivity implements itemClickListe
 
 
 
-
+/*
         Uri allImagesuri = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         String[] projection = { MediaStore.Images.ImageColumns.DATA ,MediaStore.Images.Media.DISPLAY_NAME,
                 MediaStore.Images.Media.BUCKET_DISPLAY_NAME,MediaStore.Images.Media.BUCKET_ID};
@@ -133,6 +145,8 @@ public class GalleryActivity extends AppCompatActivity implements itemClickListe
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+ */
         for(int i = 0;i < picFolders.size();i++){
             Log.d("picture folders",picFolders.get(i).getFolderName()+" and path = "+picFolders.get(i).getPath()+" "+picFolders.get(i).getNumberOfPics());
         }

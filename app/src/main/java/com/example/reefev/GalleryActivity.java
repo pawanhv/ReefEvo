@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.Manifest;
 import android.content.Intent;
@@ -11,12 +12,10 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.reefev.utils.MarginDecoration;
 import com.example.reefev.utils.PicHolder;
@@ -25,8 +24,6 @@ import com.example.reefev.utils.itemClickListener;
 import com.example.reefev.utils.pictureFacer;
 import com.example.reefev.utils.pictureFolderAdapter;
 
-import java.io.File;
-import java.io.FileFilter;
 import java.util.ArrayList;
 
 public class GalleryActivity extends AppCompatActivity implements itemClickListener {
@@ -64,49 +61,13 @@ public class GalleryActivity extends AppCompatActivity implements itemClickListe
         }
     }
 
+
+
     private ArrayList<imageFolder> getPicturePaths(){
         ArrayList<imageFolder> picFolders = new ArrayList<>();
         ArrayList<String> picPaths = new ArrayList<>();
 
-        File path = new File(Environment.getExternalStorageDirectory() ,"ReefEVO");
-        if (! path.exists()){
-            path.mkdir();
-        }
 
-        File [] directories = path.listFiles();
-        if (directories.length == 0) {
-            // array empty or does not exist
-        }
-        else
-        {
-            for (int i = 0; i< directories.length; i++) {
-                if (directories[i].isDirectory()){ //this line weeds out other directories/folders
-                    imageFolder folds = new imageFolder();
-
-                    folds.setPath(directories[i].getAbsolutePath());
-                    folds.setFolderName(directories[i].getName());
-                    String datapath="";
-                    File[] files = new File(Environment.getExternalStorageDirectory() ,"ReefEVO"+ File.separator + directories[i].getName()).listFiles();
-                    if (files.length>0) {
-                        for (File file : files) {
-                            if (file.isFile()) {
-                                datapath= file.getAbsolutePath()+File.separator+file.getName();
-                                break;
-                            }
-                        }
-                        folds.setFirstPic(datapath);//if the folder has only one picture this line helps to set it as first so as to avoid blank image in itemview
-                    }
-                    folds.addpics();
-                    picFolders.add(folds);
-                }
-
-            }
-
-        }
-
-
-
-/*
         Uri allImagesuri = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         String[] projection = { MediaStore.Images.ImageColumns.DATA ,MediaStore.Images.Media.DISPLAY_NAME,
                 MediaStore.Images.Media.BUCKET_DISPLAY_NAME,MediaStore.Images.Media.BUCKET_ID};
@@ -124,7 +85,7 @@ public class GalleryActivity extends AppCompatActivity implements itemClickListe
                 //String folderpaths =  datapath.replace(name,"");
                 String folderpaths = datapath.substring(0, datapath.lastIndexOf(folder+"/"));
                 folderpaths = folderpaths+folder+"/";
-                if (!picPaths.contains(folderpaths)) {
+                if ((!picPaths.contains(folderpaths)) && folderpaths.contains("ReefEVO")) {
                     picPaths.add(folderpaths);
 
                     folds.setPath(folderpaths);
@@ -146,7 +107,7 @@ public class GalleryActivity extends AppCompatActivity implements itemClickListe
             e.printStackTrace();
         }
 
- */
+
         for(int i = 0;i < picFolders.size();i++){
             Log.d("picture folders",picFolders.get(i).getFolderName()+" and path = "+picFolders.get(i).getPath()+" "+picFolders.get(i).getNumberOfPics());
         }
@@ -171,6 +132,7 @@ public class GalleryActivity extends AppCompatActivity implements itemClickListe
         move.putExtra("folderName",folderName);
 
         startActivity(move);
+        finish();
     }
 
 }

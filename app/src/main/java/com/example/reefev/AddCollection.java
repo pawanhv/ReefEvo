@@ -56,6 +56,7 @@ public class AddCollection extends AppCompatActivity {
                         intent.putExtra("Collectiontype","New");
 
                         startActivity(intent);
+                        finish();
                     }
 
 

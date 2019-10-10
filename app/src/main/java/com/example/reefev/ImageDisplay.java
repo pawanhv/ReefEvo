@@ -143,6 +143,7 @@ public class ImageDisplay extends AppCompatActivity implements itemClickListener
         intent.putExtra("folderPath",filepath1);
         intent.putExtra("folderName",filename1);
         startActivity(intent);
+        finish();
     }
 
     public void onClick_add_coll(View v)
@@ -151,6 +152,7 @@ public class ImageDisplay extends AppCompatActivity implements itemClickListener
         intent.putExtra("Collectionname",filename1);
         intent.putExtra("Collectiontype","Old");
         startActivity(intent);
+        finish();
     }
 
 }

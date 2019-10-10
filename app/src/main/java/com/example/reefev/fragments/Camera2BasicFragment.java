@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -27,6 +28,8 @@ import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -44,6 +47,7 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import com.example.reefev.ImageDisplay;
 import com.example.reefev.R;
 import com.example.reefev.utils.AutoFitTextureView;
 import com.example.reefev.utils.CameraFocusOnTouchHandler;
@@ -908,9 +912,40 @@ public class Camera2BasicFragment extends Fragment
                     public void onCaptureCompleted(@NonNull CameraCaptureSession session,
                                                    @NonNull CaptureRequest request,
                                                    @NonNull TotalCaptureResult result) {
-                        showToast("Saved: " + mFile);
-                        Log.d(TAG, value1);
-                        unlockFocus();
+
+
+                        Bitmap myBitmap = BitmapFactory.decodeFile(mFile.getAbsolutePath());
+                        myImage.setImageBitmap(myBitmap);
+
+
+                        new AlertDialog.Builder(getContext())
+                                .setTitle("Title")
+                                .setMessage( mFile.getParent())
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        myImage.setAlpha(0f);
+                                        showToast("Saved: " + mFile);
+                                        Log.d(TAG, value1);
+                                        unlockFocus();
+
+                                        Intent move = new Intent(getActivity(), ImageDisplay.class);
+                                        move.putExtra("folderPath", mFile.getParent());
+                                        move.putExtra("folderName",value1);
+
+                                        startActivity(move);
+                                        getActivity().finish();
+
+                                    }})
+                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        myImage.setAlpha(0f);
+                                        showToast("Restart: ");
+                                        unlockFocus();
+                                    }}).show();
+
                     }
                 };
 
@@ -923,6 +958,7 @@ public class Camera2BasicFragment extends Fragment
             e.printStackTrace();
         }
     }
+
 
     /**
      * Retrieves the JPEG orientation from the specified screen rotation.

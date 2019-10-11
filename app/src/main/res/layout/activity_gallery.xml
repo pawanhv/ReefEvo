@@ -38,7 +38,8 @@
                 android:layout_marginRight="10dp"
                 android:background="@android:color/transparent"
                 android:src="@android:drawable/ic_menu_add"
-                android:tint="@color/SecondaryVariant" />
+                android:tint="@color/SecondaryVariant"
+                android:onClick="new_click"/>
         </androidx.cardview.widget.CardView>
 
         <com.example.reefev.utils.AutoFitRecyclerView

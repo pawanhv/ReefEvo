@@ -47,6 +47,7 @@ public class pictureBrowserFragment extends Fragment implements imageIndicatorLi
     private ImagesPagerAdapter pagingImages;
     private int previousSelected = -1;
 
+
     public pictureBrowserFragment(){
 
     }

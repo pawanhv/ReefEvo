@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.reefev.utils.MarginDecoration;
@@ -32,6 +33,7 @@ public class GalleryActivity extends AppCompatActivity implements itemClickListe
     RecyclerView folderRecycler;
     TextView empty;
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
+    ImageButton newbt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,10 @@ public class GalleryActivity extends AppCompatActivity implements itemClickListe
         folderRecycler = findViewById(R.id.folderRecycler);
         folderRecycler.addItemDecoration(new MarginDecoration(this));
         folderRecycler.hasFixedSize();
+
+        newbt = findViewById(R.id.menu);
+
+
         ArrayList<imageFolder> folds = getPicturePaths();
 
         if(folds.isEmpty()){
@@ -61,6 +67,11 @@ public class GalleryActivity extends AppCompatActivity implements itemClickListe
         }
     }
 
+    public void new_click(View view) {
+        Intent intent = new Intent(this, AddCollection.class);
+        startActivity(intent);
+
+    }
 
 
     private ArrayList<imageFolder> getPicturePaths(){
@@ -132,7 +143,7 @@ public class GalleryActivity extends AppCompatActivity implements itemClickListe
         move.putExtra("folderName",folderName);
 
         startActivity(move);
-        finish();
+
     }
 
 }

@@ -930,6 +930,11 @@ public class Camera2BasicFragment extends Fragment
                                         Log.d(TAG, value1);
                                         unlockFocus();
 
+                                        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                                        Uri contentUri = Uri.fromFile(mFile);
+                                        mediaScanIntent.setData(contentUri);
+                                        getActivity().sendBroadcast(mediaScanIntent);
+
                                         Intent move = new Intent(getActivity(), ImageDisplay.class);
                                         move.putExtra("folderPath", mFile.getParent());
                                         move.putExtra("folderName",value1);
@@ -942,7 +947,6 @@ public class Camera2BasicFragment extends Fragment
 
                                     public void onClick(DialogInterface dialog, int whichButton) {
                                         myImage.setAlpha(0f);
-                                        showToast("Restart: ");
                                         unlockFocus();
                                     }}).show();
 
@@ -1009,7 +1013,9 @@ public class Camera2BasicFragment extends Fragment
     private void setAutoFlash(CaptureRequest.Builder requestBuilder) {
         if (mFlashSupported) {
             requestBuilder.set(CaptureRequest.CONTROL_AE_MODE,
-                    CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
+                    CaptureRequest.CONTROL_AE_MODE_ON);
+            requestBuilder.set(CaptureRequest.FLASH_MODE,
+                    CaptureRequest.FLASH_MODE_OFF);
         }
     }
 

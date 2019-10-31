@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.ArrayList;
 
+import org.jcodec.api.SequenceEncoder;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 
@@ -84,7 +86,6 @@ public class VideoPlayerActivity extends AppCompatActivity {
             }
         };
 
-
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -137,67 +138,8 @@ public class VideoPlayerActivity extends AppCompatActivity {
 
             }
         });
-
-/*
-        int maxi=100;
-        if (files.length<maxi){
-            maxi=files.length;
-        }
-        for (int i = 0; i < maxi ; i++) {
-            File imgFile = new File(filepath1 + "/" + files[i].getName());
-            if (imgFile.exists()) {
-                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                //bitmapArray.add(myBitmap); // Add a bitmap
-            }
-        }
-
-/*
-*/
-        /*
-        AnimationDrawable anim = new AnimationDrawable();
-        int maxi=100;
-        if (files.length<maxi){
-            maxi=files.length;
-        }
-        for (int i = 0; i < maxi ; i++) {
-            File imgFile = new File(filepath1 + "/" + files[i].getName());
-            if (imgFile.exists()) {
-                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                Drawable d = new BitmapDrawable(getResources(), myBitmap);
-                anim.addFrame(d, 33);
-            }
-        }
-        myImage.setImageDrawable(anim);
-        anim.start();
-
-
-
-        final Handler handler = new Handler();
-        new Runnable() {
-            int updateInterval = 10;
-            int i = -1;
-            @Override
-            public void run() {
-                if (i >= files.length){
-                    i = -1;
-                }
-                i++;
-                // Any code which goes here will be executed every 'updateInterval'
-                // change your background here
-                File imgFile = new  File(filepath1+"/"+files[i].getName());
-                if(imgFile.exists()){
-                    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                    myImage.setImageBitmap(myBitmap);
-                }
-                handler.postDelayed(this, updateInterval);
-
-            }
-        }.run();
-*/
-
-
-
     }
+
     public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth)
     {
         int width = bm.getWidth();
@@ -214,5 +156,18 @@ public class VideoPlayerActivity extends AppCompatActivity {
     }
 
 
+    public void onClick_play(View v)
+    {
+        SequenceEncoder enc = new SequenceEncoder(new File("filename"));
+    // GOP size will be supported in 0.2
+    // enc.getEncoder().setKeyInterval(25);
+            for(...) {
+            BufferedImage image = ... // Obtain an image to encode
+            enc.encodeImage(image);
+        }
+            enc.finish();
     }
+
+
+}
 

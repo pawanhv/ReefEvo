@@ -492,7 +492,10 @@ public class Camera2BasicFragment extends Fragment
             public void onStopTrackingTouch(SeekBar seekBar) {
                 myImage.setAlpha(progressChangedValue/200.0f);
             }
+
+
         });
+
 
     }
 
@@ -766,16 +769,15 @@ public class Camera2BasicFragment extends Fragment
                             if (null == mCameraDevice) {
                                 return;
                             }
-
                             // When the session is ready, we start displaying the preview.
                             mCaptureSession = cameraCaptureSession;
                             try {
+
                                 // Auto focus should be continuous for camera preview.
                                 mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,
                                         CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
                                 // Flash is automatically enabled when necessary.
                                 setAutoFlash(mPreviewRequestBuilder);
-
 
                                 mTextureView.setOnTouchListener(new CameraFocusOnTouchHandler(characteristics, mPreviewRequestBuilder, mCaptureSession, mBackgroundHandler));
 
@@ -840,22 +842,7 @@ public class Camera2BasicFragment extends Fragment
         lockFocus();
     }
 
-    /**
-     * Lock the focus as the first step for a still image capture.
-     */
-    private void lockFocus() {
-        try {
-            // This is how to tell the camera to lock focus.
-            mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,
-                    CameraMetadata.CONTROL_AF_TRIGGER_START);
-            // Tell #mCaptureCallback to wait for the lock.
-            mState = STATE_WAITING_LOCK;
-            mCaptureSession.capture(mPreviewRequestBuilder.build(), mCaptureCallback,
-                    mBackgroundHandler);
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
-        }
-    }
+
 
     /**
      * Run the precapture sequence for capturing a still image. This method should be called when
@@ -881,6 +868,7 @@ public class Camera2BasicFragment extends Fragment
      */
     private void captureStillPicture() {
         try {
+                lockFocus();
                 Calendar cal = Calendar.getInstance();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmss");
                 String dateStr = dateFormat.format(cal.getTime());
@@ -896,10 +884,13 @@ public class Camera2BasicFragment extends Fragment
                         mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
                 captureBuilder.addTarget(mImageReader.getSurface());
 
+
                 // Use the same AE and AF modes as the preview.
                 captureBuilder.set(CaptureRequest.CONTROL_AF_MODE,
                         CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
                 setAutoFlash(captureBuilder);
+
+
 
                 // Orientation
                 int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
@@ -913,9 +904,8 @@ public class Camera2BasicFragment extends Fragment
                                                    @NonNull CaptureRequest request,
                                                    @NonNull TotalCaptureResult result) {
 
-
                         Bitmap myBitmap = BitmapFactory.decodeFile(mFile.getAbsolutePath());
-                        myImage.setImageBitmap(myBitmap);
+                        myImage.setAlpha(0f);
 
 
                         new AlertDialog.Builder(getContext())
@@ -946,18 +936,18 @@ public class Camera2BasicFragment extends Fragment
                                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
 
                                     public void onClick(DialogInterface dialog, int whichButton) {
-                                        myImage.setAlpha(0f);
+                                        if (value2.contains("Old")){
+                                            myImage.setAlpha(0.0f);
+                                            TransSeekBar.setProgress(0);
+                                        }
+                                        boolean deleted = mFile.delete();
                                         unlockFocus();
                                     }}).show();
-
                     }
                 };
-
                 mCaptureSession.stopRepeating();
                 mCaptureSession.abortCaptures();
                 mCaptureSession.capture(captureBuilder.build(), CaptureCallback, null);
-
-
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
@@ -976,6 +966,23 @@ public class Camera2BasicFragment extends Fragment
         // For devices with orientation of 90, we simply return our mapping from ORIENTATIONS.
         // For devices with orientation of 270, we need to rotate the JPEG 180 degrees.
         return (ORIENTATIONS.get(rotation) + mSensorOrientation + 270) % 360;
+    }
+
+    /**
+     * Lock the focus as the first step for a still image capture.
+     */
+    private void lockFocus() {
+        try {
+            // This is how to tell the camera to lock focus.
+            mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,
+                    CameraMetadata.CONTROL_AF_TRIGGER_START);
+            // Tell #mCaptureCallback to wait for the lock.
+            mState = STATE_WAITING_LOCK;
+            mCaptureSession.capture(mPreviewRequestBuilder.build(), mCaptureCallback,
+                    mBackgroundHandler);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -1006,7 +1013,6 @@ public class Camera2BasicFragment extends Fragment
                 takePicture();
                 break;
             }
-
         }
     }
 
@@ -1037,7 +1043,6 @@ public class Camera2BasicFragment extends Fragment
             mImage = image;
             mFile = file;
         }
-
         @Override
         public void run() {
             ByteBuffer buffer = mImage.getPlanes()[0].getBuffer();
@@ -1067,23 +1072,19 @@ public class Camera2BasicFragment extends Fragment
      * Compares two {@code Size}s based on their areas.
      */
     static class CompareSizesByArea implements Comparator<Size> {
-
         @Override
         public int compare(Size lhs, Size rhs) {
             // We cast here to ensure the multiplications won't overflow
             return Long.signum((long) lhs.getWidth() * lhs.getHeight() -
                     (long) rhs.getWidth() * rhs.getHeight());
         }
-
     }
 
     /**
      * Shows an error message dialog.
      */
     public static class ErrorDialog extends DialogFragment {
-
         private static final String ARG_MESSAGE = "message";
-
         public static ErrorDialog newInstance(String message) {
             ErrorDialog dialog = new ErrorDialog();
             Bundle args = new Bundle();
@@ -1091,7 +1092,6 @@ public class Camera2BasicFragment extends Fragment
             dialog.setArguments(args);
             return dialog;
         }
-
         @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -1106,14 +1106,12 @@ public class Camera2BasicFragment extends Fragment
                     })
                     .create();
         }
-
     }
 
     /**
      * Shows OK/Cancel confirmation dialog about camera permission.
      */
     public static class ConfirmationDialog extends DialogFragment {
-
         @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {

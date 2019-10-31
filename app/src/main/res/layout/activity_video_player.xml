@@ -26,4 +26,13 @@
         android:layout_marginBottom="84dp"
         app:layout_constraintHorizontal_bias="0.483" />
 
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/imageView2"
+        android:text="Button"
+        android:onClick="onClick_play"
+         />
+
 </RelativeLayout>

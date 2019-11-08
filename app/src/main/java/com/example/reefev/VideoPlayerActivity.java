@@ -156,18 +156,9 @@ public class VideoPlayerActivity extends AppCompatActivity {
     }
 
 
-    public void onClick_play(View v)
-    {
-        SequenceEncoder enc = new SequenceEncoder(new File("filename"));
-    // GOP size will be supported in 0.2
-    // enc.getEncoder().setKeyInterval(25);
-            for(...) {
-            BufferedImage image = ... // Obtain an image to encode
-            enc.encodeImage(image);
-        }
-            enc.finish();
-    }
+    public void onClick_play(View v) {
 
+    }
 
 }
 

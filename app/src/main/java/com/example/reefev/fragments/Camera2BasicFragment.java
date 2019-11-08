@@ -94,7 +94,7 @@ public class Camera2BasicFragment extends Fragment
     int progressChangedValue = 0;
     ImageView myImage;
     String value1,value2;
-
+    Bitmap myBitmap;
     /**
      * Tag for the {@link Log}.
      */
@@ -470,7 +470,7 @@ public class Camera2BasicFragment extends Fragment
                 showToast(filnae);
                 File imgFile = new  File(Environment.getExternalStorageDirectory() ,"ReefEVO"+ File.separator + value1 + File.separator + filnae);
                 if(imgFile.exists()){
-                    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                    myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                     myImage.setImageBitmap(myBitmap);
                     myImage.setAlpha(0.5f); //value: [0.0-1.0]. Where 0 is fully transparent and 1.0 is fully opaque.
                 }
@@ -779,7 +779,7 @@ public class Camera2BasicFragment extends Fragment
                                 // Flash is automatically enabled when necessary.
                                 setAutoFlash(mPreviewRequestBuilder);
 
-                                mTextureView.setOnTouchListener(new CameraFocusOnTouchHandler(characteristics, mPreviewRequestBuilder, mCaptureSession, mBackgroundHandler));
+                                //mTextureView.setOnTouchListener(new CameraFocusOnTouchHandler(characteristics, mPreviewRequestBuilder, mCaptureSession, mBackgroundHandler));
 
                                 // Finally, we start displaying the camera preview.
                                 mPreviewRequest = mPreviewRequestBuilder.build();
@@ -842,7 +842,13 @@ public class Camera2BasicFragment extends Fragment
         lockFocus();
     }
 
+    public void sideview(View v){
 
+            showToast("hi");
+
+
+        
+    }
 
     /**
      * Run the precapture sequence for capturing a still image. This method should be called when
